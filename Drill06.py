@@ -32,7 +32,7 @@ def reset_world():
 
     frame = 0
     action = 3
-    set_new_target_arrow()
+    #set_new_target_arrow()
 
 def set_new_target_arrow():
     global sx, sy, hx, hy, t, action, frame
@@ -46,7 +46,7 @@ def set_new_target_arrow():
 def render_world():
     clear_canvas()
     TUK_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
-    arrow.draw(hx, hy)
+    #arrow.draw(hx, hy)
     character.clip_draw(frame * 100, 100 * action, 100, 100, cx, cy)
     update_canvas()
 
@@ -58,13 +58,13 @@ def update_world():
     global action
     frame = (frame + 1) % 8
 
-    if t < 1.0:
-        cx = (1 - t) * sx + t * hx
-        cy = (1 - t) * sy + t * hy
-        t += 0.001
-    else:
-        cx, cy = hx, hy #캐릭터와 목적지 위치 정확하게 일치시키기
-        set_new_target_arrow()
+    # if t < 1.0:
+    #     cx = (1 - t) * sx + t * hx
+    #     cy = (1 - t) * sy + t * hy
+    #     t += 0.001
+    # else:
+    #     cx, cy = hx, hy #캐릭터와 목적지 위치 정확하게 일치시키기
+    #     set_new_target_arrow()
 
 open_canvas(TUK_WIDTH, TUK_HEIGHT)
 hide_cursor()
