@@ -1,5 +1,6 @@
 from pico2d import *
 import random
+
 TUK_WIDTH, TUK_HEIGHT = 1280, 1024
 
 
@@ -30,11 +31,16 @@ def reset_world():
     global t
     running = True
     cx, cy = TUK_WIDTH // 2, TUK_HEIGHT // 2
-    sx , sy = cx, cy    #p1
+
     frame = 0
     action = 3
-    #hx, hy = TUK_WIDTH - 50, TUK_HEIGHT - 50
-    hx, hy = random.randint(0, TUK_WIDTH), random.randint(0, TUK_HEIGHT) # p2
+    set_new_target_arrow()
+
+def set_new_target_arrow():
+    global sx, sy, hx, hy, t
+    sx, sy = cx, cy  # p1
+    # hx, hy = TUK_WIDTH - 50, TUK_HEIGHT - 50
+    hx, hy = random.randint(0, TUK_WIDTH), random.randint(0, TUK_HEIGHT)  # p2
     t = 0.0
 
 def render_world():
@@ -43,7 +49,6 @@ def render_world():
     arrow.draw(hx, hy)
     character.clip_draw(frame * 100, 100 * action, 100, 100, cx, cy)
     update_canvas()
-
 
 
 def update_world():
@@ -57,6 +62,9 @@ def update_world():
         cx = (1 - t) * sx + t * hx
         cy = (1 - t) * sy + t * hy
         t += 0.001
+    else:
+        cx, cy = hx, hy #캐릭터와 목적지 위치 정확하게 일치시키기
+        set_new_target_arrow()
 
 open_canvas(TUK_WIDTH, TUK_HEIGHT)
 hide_cursor()
@@ -64,8 +72,8 @@ load_resources()
 reset_world()
 
 while running:
-    render_world()       # 월드에 현재 내용을 그린다
-    handle_events()      # 사용자의 입력을 받아들인다
-    update_world()       # 월드 안의 객체간의 상호작용을 계산, 그 결과를 update한다
+    render_world()  # 월드에 현재 내용을 그린다
+    handle_events()  # 사용자의 입력을 받아들인다
+    update_world()  # 월드 안의 객체간의 상호작용을 계산, 그 결과를 update한다
 
 close_canvas()
