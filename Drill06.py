@@ -41,13 +41,19 @@ def reset_world():
     set_new_target_arrow()
 
 def set_new_target_arrow():
-    global sx, sy, hx, hy, t, action, frame
-    sx, sy = cx, cy  # p1
-    # hx, hy = TUK_WIDTH - 50, TUK_HEIGHT - 50
-    hx, hy = points[0]  # p2
-    t = 0.0
-    action = 1 if sx < hx else 0
-    frame = 0
+    global sx, sy, hx, hy, t, action, frame, target_exist
+    if points:  #points에 뭔가 있으면
+        sx, sy = cx, cy  # p1
+        # hx, hy = TUK_WIDTH - 50, TUK_HEIGHT - 50
+        hx, hy = points[0]  # p2
+        t = 0.0
+        action = 1 if sx < hx else 0
+        frame = 0
+        target_exist = True
+    else:
+        action = 3 if action == 1 else 2
+        frame = 0
+        target_exist = False
 
 def render_world():
     clear_canvas()
@@ -64,15 +70,18 @@ def update_world():
     global cx, cy
     global t
     global action
+    global points
     frame = (frame + 1) % 8
 
-    if t < 1.0:
-        cx = (1 - t) * sx + t * hx
-        cy = (1 - t) * sy + t * hy
-        t += 0.001
-    else:
-        cx, cy = hx, hy #캐릭터와 목적지 위치 정확하게 일치시키기
-        set_new_target_arrow()
+    if target_exist:
+        if t < 1.0:
+            cx = (1 - t) * sx + t * hx
+            cy = (1 - t) * sy + t * hy
+            t += 0.001
+        else:
+            cx, cy = hx, hy #캐릭터와 목적지 위치 정확하게 일치시키기
+            del points[0]
+            set_new_target_arrow()
 
 open_canvas(TUK_WIDTH, TUK_HEIGHT)
 hide_cursor()
